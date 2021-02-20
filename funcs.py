@@ -1,6 +1,7 @@
 total_money_collected = 0
 secret_points = 0
 
+
 def has_raw_materials(f_raw_materials, d_raw_materials):
     """Check if there are enough raw materials in the machine
 
@@ -54,14 +55,14 @@ def has_enough_money(f_money_collected, f_cupcake_price):
     """
     global total_money_collected
     if f_money_collected > f_cupcake_price:
-            excess_money_collected = round(f_money_collected - f_cupcake_price, 2)
-            total_money_collected += f_cupcake_price
-            return 'Change: ${0:.2f}\n'.format(excess_money_collected)
+        excess_money_collected = round(f_money_collected - f_cupcake_price, 2)
+        total_money_collected += f_cupcake_price
+        return 'Change: ${0:.2f}\n'.format(excess_money_collected)
     elif f_money_collected == f_cupcake_price:
-            total_money_collected += f_cupcake_price
-            global secret_points
-            secret_points += 1
-            return 'You\'ve earned one secret point.'
+        total_money_collected += f_cupcake_price
+        global secret_points
+        secret_points += 1
+        return 'You\'ve earned one secret point.'
     else:
         return 'Insufficient funds...  Dispensing coins inserted.\n'
 
