@@ -1,5 +1,3 @@
-
-
 def has_raw_materials(f_raw_materials, d_raw_materials):
     """Check if there are enough raw materials in the machine
 
