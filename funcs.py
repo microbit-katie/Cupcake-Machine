@@ -1,5 +1,5 @@
-total_money_collected = 0
 secret_points = 0
+total_money_collected = 0
 
 
 def has_raw_materials(f_raw_materials, d_raw_materials):
@@ -20,6 +20,24 @@ def has_raw_materials(f_raw_materials, d_raw_materials):
         return additional_resources_needed
     else:
         return True
+
+
+def add_needed_ingredients(f_raw_materials, d_raw_materials):
+    """ Check for missing ingredients and add them in.
+
+    Params:
+        f_raw_materials: dict
+        d_raw_materials: dict
+
+    Returns:
+        string
+    """
+    global secret_points
+    secret_points -= 1
+    for f_raw_material in f_raw_materials:
+        if f_raw_materials[f_raw_material] > d_raw_materials[f_raw_material]:
+            d_raw_materials[f_raw_material] += f_raw_materials[f_raw_material]
+    return 'The elves have restocked the machine. You have {0} secret points left.'.format(secret_points)
 
 
 def collect_money(f_max_value, f_quarters, f_dimes, f_nickels):
@@ -54,15 +72,15 @@ def has_enough_money(f_money_collected, f_cupcake_price):
         str
     """
     global total_money_collected
+    global secret_points
     if f_money_collected > f_cupcake_price:
         excess_money_collected = round(f_money_collected - f_cupcake_price, 2)
         total_money_collected += f_cupcake_price
         return 'Change: ${0:.2f}\n'.format(excess_money_collected)
     elif f_money_collected == f_cupcake_price:
         total_money_collected += f_cupcake_price
-        global secret_points
         secret_points += 1
-        return 'You\'ve earned one secret point.'
+        return 'You\'ve earned one secret point. Total secret points: {0}'.format(secret_points)
     else:
         return 'Insufficient funds...  Dispensing coins inserted.\n'
 
@@ -107,4 +125,5 @@ def stats(d_raw_materials):
     cm_stats += 'bacon infused bourbon {0} tablespoons remaining\n'.format(d_raw_materials['bacon infused bourbon'])
     cm_stats += 'sea salt {0} tablespoons remaining\n'.format(d_raw_materials['sea salt'])
     cm_stats += 'Total Money Collected: ${0:.2f}\n'.format(total_money_collected)
+    cm_stats += 'Total secret points earned: {0}'.format(secret_points)
     return cm_stats

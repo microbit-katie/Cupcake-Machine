@@ -1,9 +1,12 @@
-from funcs import has_raw_materials, collect_money, has_enough_money, bake_cupcake, stats
+from funcs import has_raw_materials, collect_money, has_enough_money, bake_cupcake, stats, add_needed_ingredients
 from data import CUPCAKE_CHOICES, raw_materials
 
 CHOICES = ('rainbow', 'salted caramel', 'dark cherry', 'bacon bourbon', 'stats', 'shutdown')
+SPEND_POINT_YES = ('Y', 'y')
+SPEND_POINT_NO = ('N', 'n')
 SHUTDOWN_PASSWORD = '101010'
 machine_active = True
+SECRET_POINTS = 0
 
 while machine_active:
     valid_choice = False
@@ -26,8 +29,23 @@ while machine_active:
         has_enough_raw_materials = has_raw_materials(selection['ingredients'], raw_materials)
         if not isinstance(has_enough_raw_materials, bool):
             print(has_enough_raw_materials)
-            machine_active = False
+            if SECRET_POINTS >= 1:
+                spend_point = input('Would you like to spend 1 secret point to add more ingredients? Enter Y or N.')
+                if spend_point in SPEND_POINT_YES:
+                    add_needed_ingredients_now = add_needed_ingredients(selection['ingredients'], raw_materials)
+                    if isinstance(add_needed_ingredients_now, str):
+                        print(add_needed_ingredients_now)
+                    SECRET_POINTS -= 1
+                    selection = CUPCAKE_CHOICES[choice]
+                    has_enough_raw_materials = has_raw_materials(selection['ingredients'], raw_materials)
+                elif spend_point in SPEND_POINT_NO:
+                    machine_active = False
+                else:
+                    print('That is not a valid selection...\n')
+            else:
+                machine_active = False
         if isinstance(has_enough_raw_materials, bool):
+            print('A {0} cupcake costs {1:.2f}'.format(choice, selection['price']))
             quarters = input('Quarters: ')
             dimes = input('Dimes: ')
             nickels = input('Nickels: ')
@@ -42,6 +60,8 @@ while machine_active:
                     cupcake = bake_cupcake(choice, selection['ingredients'], raw_materials)
                     print(cupcake)
                     print(change)
+                    if isinstance(change, str):
+                        SECRET_POINTS += 1
         else:
             machine_active = False
 
