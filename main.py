@@ -6,7 +6,8 @@ SPEND_POINT_YES = ('Y', 'y')
 SPEND_POINT_NO = ('N', 'n')
 SHUTDOWN_PASSWORD = '101010'
 machine_active = True
-SECRET_POINTS = 0
+secret_points = 0
+total_money_collected = 0
 
 while machine_active:
     valid_choice = False
@@ -22,20 +23,21 @@ while machine_active:
         else:
             print('YOU ARE NOT AUTHORIZED TO DISABLE THIS MACHINE!\n')
     elif choice == 'stats':
-        stats_ = stats(raw_materials)
+        stats_ = stats(raw_materials, secret_points, total_money_collected)
         print(stats_)
     elif valid_choice:
         selection = CUPCAKE_CHOICES[choice]
         has_enough_raw_materials = has_raw_materials(selection['ingredients'], raw_materials)
         if not isinstance(has_enough_raw_materials, bool):
             print(has_enough_raw_materials)
-            if SECRET_POINTS >= 1:
-                spend_point = input('Would you like to spend 1 secret point to add more ingredients? Enter Y or N.')
+            if secret_points >= 1:
+                spend_point = input('Would you like to spend 1 secret point to add more ingredients? Enter Y or N: ')
                 if spend_point in SPEND_POINT_YES:
-                    add_needed_ingredients_now = add_needed_ingredients(selection['ingredients'], raw_materials)
+                    add_needed_ingredients_now, secret_points = add_needed_ingredients(selection['ingredients'],
+                                                                                       raw_materials,
+                                                                                       secret_points)
                     if isinstance(add_needed_ingredients_now, str):
                         print(add_needed_ingredients_now)
-                    SECRET_POINTS -= 1
                     selection = CUPCAKE_CHOICES[choice]
                     has_enough_raw_materials = has_raw_materials(selection['ingredients'], raw_materials)
                 elif spend_point in SPEND_POINT_NO:
@@ -53,15 +55,14 @@ while machine_active:
             if not isinstance(money, float):
                 print(money)
             else:
-                change = has_enough_money(money, selection['price'])
+                change, secret_points, total_money_collected = has_enough_money(money, selection['price'],
+                                                                                secret_points, total_money_collected)
                 if change == 'Insufficient funds...  Dispensing coins inserted.\n':
                     print(change)
                 else:
                     cupcake = bake_cupcake(choice, selection['ingredients'], raw_materials)
                     print(cupcake)
                     print(change)
-                    if isinstance(change, str):
-                        SECRET_POINTS += 1
         else:
             machine_active = False
 

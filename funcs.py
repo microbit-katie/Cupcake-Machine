@@ -1,4 +1,3 @@
-secret_points = 0
 total_money_collected = 0
 
 
@@ -22,7 +21,7 @@ def has_raw_materials(f_raw_materials, d_raw_materials):
         return True
 
 
-def add_needed_ingredients(f_raw_materials, d_raw_materials):
+def add_needed_ingredients(f_raw_materials, d_raw_materials, f_secret_points):
     """ Check for missing ingredients and add them in.
 
     Params:
@@ -30,14 +29,14 @@ def add_needed_ingredients(f_raw_materials, d_raw_materials):
         d_raw_materials: dict
 
     Returns:
-        string
+        str, int
     """
-    global secret_points
-    secret_points -= 1
+    f_secret_points -= 1
     for f_raw_material in f_raw_materials:
         if f_raw_materials[f_raw_material] > d_raw_materials[f_raw_material]:
             d_raw_materials[f_raw_material] += f_raw_materials[f_raw_material]
-    return 'The elves have restocked the machine. You have {0} secret points left.'.format(secret_points)
+    return 'The elves have restocked the machine. You have {0} secret points left.'.format(f_secret_points), \
+           f_secret_points
 
 
 def collect_money(f_max_value, f_quarters, f_dimes, f_nickels):
@@ -61,7 +60,7 @@ def collect_money(f_max_value, f_quarters, f_dimes, f_nickels):
         return 'Please enter valid currency.\n'
 
 
-def has_enough_money(f_money_collected, f_cupcake_price):
+def has_enough_money(f_money_collected, f_cupcake_price, f_secret_points, f_total_money_collected):
     """Check to see if customer put in enough money into the machine
 
     Params:
@@ -69,18 +68,18 @@ def has_enough_money(f_money_collected, f_cupcake_price):
         f_cupcake_price: float
 
     Returns:
-        str
+        str, int
     """
-    global total_money_collected
-    global secret_points
+    # global total_money_collected
     if f_money_collected > f_cupcake_price:
         excess_money_collected = round(f_money_collected - f_cupcake_price, 2)
-        total_money_collected += f_cupcake_price
+        f_total_money_collected += f_cupcake_price
         return 'Change: ${0:.2f}\n'.format(excess_money_collected)
     elif f_money_collected == f_cupcake_price:
-        total_money_collected += f_cupcake_price
-        secret_points += 1
-        return 'You\'ve earned one secret point. Total secret points: {0}'.format(secret_points)
+        f_total_money_collected += f_cupcake_price
+        f_secret_points += 1
+        return 'You\'ve earned one secret point. Total secret points: {0}'.format(f_secret_points), f_secret_points, \
+               f_total_money_collected
     else:
         return 'Insufficient funds...  Dispensing coins inserted.\n'
 
@@ -101,7 +100,7 @@ def bake_cupcake(f_cupcake_choice, f_raw_materials, d_raw_materials):
     return 'A {0} cupcake has been dispensed!'.format(f_cupcake_choice)
 
 
-def stats(d_raw_materials):
+def stats(d_raw_materials, f_secret_points, f_total_money_collected):
     """
     Show machine statistics
 
@@ -124,6 +123,6 @@ def stats(d_raw_materials):
     cm_stats += 'candied bacon {0} tablespoons remaining\n'.format(d_raw_materials['candied bacon'])
     cm_stats += 'bacon infused bourbon {0} tablespoons remaining\n'.format(d_raw_materials['bacon infused bourbon'])
     cm_stats += 'sea salt {0} tablespoons remaining\n'.format(d_raw_materials['sea salt'])
-    cm_stats += 'Total Money Collected: ${0:.2f}\n'.format(total_money_collected)
-    cm_stats += 'Total secret points earned: {0}'.format(secret_points)
+    cm_stats += 'Total Money Collected: ${0:.2f}\n'.format(f_total_money_collected)
+    cm_stats += 'Total secret points earned: {0}'.format(f_secret_points)
     return cm_stats
