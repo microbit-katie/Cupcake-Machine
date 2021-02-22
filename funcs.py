@@ -1,3 +1,5 @@
+
+
 def has_raw_materials(f_raw_materials, d_raw_materials):
     """Check if there are enough raw materials in the machine
 
@@ -24,6 +26,7 @@ def add_needed_ingredients(f_raw_materials, d_raw_materials, f_secret_points):
     Params:
         f_raw_materials: dict
         d_raw_materials: dict
+        f_secret_points: int
 
     Returns:
         str, int
@@ -63,6 +66,8 @@ def has_enough_money(f_money_collected, f_cupcake_price, f_secret_points, f_tota
     Params:
         f_money_collected: float
         f_cupcake_price: float
+        f_secret_points: int
+        f_total_money_collected: float
 
     Returns:
         str, int
@@ -102,6 +107,8 @@ def stats(d_raw_materials, f_secret_points, f_total_money_collected):
 
     Params:
         d_raw_materials: dict
+        f_secret_points: int
+        f_total_money_collected: float
 
     Returns:
         str
