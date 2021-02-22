@@ -1,4 +1,3 @@
-total_money_collected = 0
 
 
 def has_raw_materials(f_raw_materials, d_raw_materials):
@@ -70,7 +69,6 @@ def has_enough_money(f_money_collected, f_cupcake_price, f_secret_points, f_tota
     Returns:
         str, int
     """
-    # global total_money_collected
     if f_money_collected > f_cupcake_price:
         excess_money_collected = round(f_money_collected - f_cupcake_price, 2)
         f_total_money_collected += f_cupcake_price
