@@ -1,5 +1,11 @@
 from funcs import has_raw_materials, collect_money, has_enough_money, bake_cupcake, stats, add_needed_ingredients
 from data import CUPCAKE_CHOICES, raw_materials
+from microbit import*
+import neopixel
+from random import randint
+from ssd1306 import initialize, clear_oled, command
+from ssd1306_text import add_text
+import gc
 
 CHOICES = ('rainbow', 'salted caramel', 'dark cherry', 'bacon bourbon', 'stats', 'shutdown')
 SPEND_POINT_YES = ('Y', 'y')
@@ -8,8 +14,28 @@ SHUTDOWN_PASSWORD = '101010'
 machine_active = True
 secret_points = 0
 total_money_collected = 0
+image = Image("08880\n"
+              "88888\n"
+              "88888\n"
+              "55555\n"
+              "55555\n")
+np = neopixel.NeoPixel(pin1, 10)
+initialize()
+clear_oled()
+display.show(image)
 
 while machine_active:
+    gc.collect()
+    speaker.off()
+    audio.play(Sound.HAPPY)
+    for pixel_id in range(0, len(np)):
+        red = randint(0, 60)
+        green = randint(0, 60)
+        blue = randint(0, 60)
+        np[pixel_id] = (red, green, blue)
+        np.show()
+        sleep(100)
+    add_text(0, 0, 'Cupcake Game!')
     valid_choice = False
     choice = input('ORDER [rainbow - salted caramel - dark cherry - bacon bourbon]: ')
     if choice in CHOICES:
