@@ -9,6 +9,16 @@ Order four types of cupcakes.
 git clone https://github.com/microbit-katie/Cupcake-Machine.git
 ```
 
+## Run 
+```bash
+python main.py
+```
+
+## Run Tests
+```bash
+python -m unittest tests/test_funcs.py
+```
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
