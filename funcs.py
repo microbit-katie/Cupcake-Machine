@@ -43,12 +43,14 @@ def collect_money(f_max_value, f_quarters, f_dimes, f_nickels):
         return 'Please enter valid currency.\n'
 
 
-def has_enough_money(f_money_collected, f_cupcake_price):
+def has_enough_money(f_money_collected, f_cupcake_price, f_secret_points, f_total_money_collected):
     """Check to see if customer put in enough money into the machine
 
     Params:
         f_money_collected: float
         f_cupcake_price: float
+        f_secret_points: int
+        f_total_money_collected: float
 
     Returns:
         str
@@ -57,14 +59,14 @@ def has_enough_money(f_money_collected, f_cupcake_price):
     if f_money_collected > f_cupcake_price:
         excess_money_collected = round(f_money_collected - f_cupcake_price, 2)
         total_money_collected += f_cupcake_price
-        return 'Change: ${0:.2f}\n'.format(excess_money_collected)
+        return 'Change: ${0:.2f}\n'.format(excess_money_collected), f_secret_points, f_total_money_collected
     elif f_money_collected == f_cupcake_price:
         total_money_collected += f_cupcake_price
         global secret_points
         secret_points += 1
         return 'You\'ve earned one secret point.'
     else:
-        return 'Insufficient funds...  Dispensing coins inserted.\n'
+        return 'Insufficient funds...  Dispensing coins inserted.\n', f_secret_points, f_total_money_collected
 
 
 def bake_cupcake(f_cupcake_choice, f_raw_materials, d_raw_materials):
