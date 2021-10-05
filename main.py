@@ -1,6 +1,6 @@
 from funcs import has_raw_materials, collect_money, has_enough_money, bake_cupcake, stats, add_needed_ingredients
 from data import CUPCAKE_CHOICES, raw_materials
-from microbit import*
+from microbit import *
 import neopixel
 from random import randint
 from ssd1306 import initialize, clear_oled, command
